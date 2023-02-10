@@ -1,4 +1,3 @@
-
 const airlinesPro = () => {
   const flights = [
     { id: 00, to: "New York", from: "Barcelona", cost: 700, layover: false },
@@ -335,8 +334,10 @@ const airlinesPro = () => {
     const answer = question.toUpperCase();
 
     if (answer === "ADMIN") {
+      alert("Welcome Admin!");
       getVerification();
     } else if (answer === "USER") {
+      alert("Welcome User!");
       userSearchPrice();
     } else {
       invalidInput();
