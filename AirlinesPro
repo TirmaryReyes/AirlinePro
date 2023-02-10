@@ -22,6 +22,20 @@ const airlinesPro = () => {
       return;
     }
   };
+  const anotherOperation = () => {
+    let anotherMessage = confirm(
+      "Do you want to perform or cancel the operation? accept / cancel"
+    );
+
+    if (anotherMessage === true) {
+      administratorOrUser();
+      return;
+    } else {
+      anotherMessage = false;
+      goodbyeMessage(anotherMessage);
+    }
+    return;
+  };
   const inputData = () => {
     name = prompt(`Welcome indicate your name please.`);
     if (name === null) {
@@ -93,8 +107,8 @@ const airlinesPro = () => {
       console.log(
         `These are the last 5 flights today, bound for:\n${last5Destinations}.`
       );
+
       return;
-      console.log("Thank you for choosing ISDI Coders Airlines!");
     };
 
     lastFlights(flights);
@@ -133,58 +147,60 @@ const airlinesPro = () => {
       return;
     }
 
-    let destination = prompt("Please enter the destination of the flight:");
+    let getDestination = prompt("Please enter the destination of the flight:");
 
-    if (destination === null) {
-      goodbyeMessage(destination);
+    if (getDestination === null) {
+      goodbyeMessage(getDestination);
       return;
-    } else if (!letters.test(destination)) {
+    } else if (!letters.test(getDestination)) {
       invalidInput();
-      destination = prompt("Please enter the destination of the flight:");
+      getDestination = prompt("Please enter the destination of the flight:");
     }
-    let origin = prompt("Please enter the origin of the flight:");
-    if (origin === null) {
-      goodbyeMessage(origin);
+    let getOrigin = prompt("Please enter the origin of the flight:");
+    if (getOrigin === null) {
+      goodbyeMessage(getOrigin);
       return;
-    } else if (!letters.test(origin)) {
+    } else if (!letters.test(getOrigin)) {
       invalidInput();
-      origin = prompt("Please enter the origin of the flight:");
+      getOrigin = prompt("Please enter the origin of the flight:");
     }
 
-    let cost = +prompt("Please enter the cost of the flight:");
+    let getCost = +prompt("Please enter the cost of the flight:");
     if (cost === null) {
-      goodbyeMessage(cost);
+      goodbyeMessage(getCost);
       return;
-    } else if (Number.isNaN(Number(cost))) {
+    } else if (Number.isNaN(Number(getCost))) {
       invalidInput();
-      cost = +prompt("Please enter the cost of the flight:");
+      getCost = +prompt("Please enter the cost of the flight:");
     }
 
-    let layover = prompt(`Is this a layover flight? 'TRUE' / 'FALSE'`);
-    if (layover === null) {
-      goodbyeMessage(layover);
+    let getLayover = prompt(`Is this a layover flight? 'TRUE' / 'FALSE'`);
+    if (getLayover === null) {
+      goodbyeMessage(getLayover);
       return;
     }
 
-    if (layover !== "TRUE" && layover !== "FALSE") {
+    if (getLayover !== "TRUE" && getLayover !== "FALSE") {
       invalidInput();
-      layover = prompt("Is this a layover flight?  'TRUE' / 'FALSE'");
+      getLayover = prompt("Is this a layover flight?  'TRUE' / 'FALSE'");
     }
-    layover = layover === "TRUE" ? true : false;
+    getLayover = getLayover === "TRUE" ? true : false;
 
     let currentNumberOfFlights = flights.length;
     for (let i = 0; i < 1; i++) {
       let newFlight = {
         id: currentNumberOfFlights + i,
-        to: destination,
-        from: origin,
-        cost: cost,
-        layover: layover ? true : false,
+        to: getDestination,
+        from: getOrigin,
+        cost: getCost,
+        layover: getLayover ? true : false,
       };
 
       flights.push(newFlight);
       console.log(`The flight ${newFlight.id} has been added successfully.`);
-      getVerification();
+      console.log(updated());
+
+      anotherOperation();
       return;
     }
   };
@@ -225,9 +241,10 @@ const airlinesPro = () => {
     if (confirmationDeleteFlights === "Y") {
       flights.splice(index, 1);
       console.log(`The flight with id ${questionDelete} has been deleted.`);
-      updated();
+      console.log(updated());
+      anotherOperation();
     } else if (confirmationDeleteFlights === "N") {
-      getVerification();
+      anotherOperation();
     }
     return;
   };
@@ -269,31 +286,11 @@ const airlinesPro = () => {
         });
       console.log(priceFinder.join("\n"));
 
-      lookForOthers();
+      anotherOperation();
     };
     return examineFlights(flights);
   };
-  const lookForOthers = () => {
-    const anotherSearch = prompt("Do you want to find another flight? Y/N");
-    if (anotherSearch === null) {
-      goodbyeMessage(anotherSearch);
-      return;
-    }
-    const askSearch = anotherSearch.toUpperCase();
 
-    if (askSearch !== "Y" && askSearch !== "N") {
-      invalidInput();
-      lookForOthers();
-    }
-
-    if (askSearch === "Y") {
-      userSearchPrice();
-    } else if (askSearch === "N") {
-      administratorOrUser();
-      return;
-    }
-    return askSearch;
-  };
   const getVerification = () => {
     let action = prompt(
       `What action do you want to perform? press ADD, DELETE, SHOW. If you want to go back to the beginning press BACK`
