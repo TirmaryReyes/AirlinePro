@@ -14,7 +14,7 @@ const airlinesPro = () => {
 
   let name;
   const goodbyeMessage = (input) => {
-    if (input === null || input === undefined) {
+    if (input === null || input === undefined || !input) {
       console.log(
         "Thank you for visiting ISDI Coders Airlines, see you later!"
       );
@@ -27,7 +27,7 @@ const airlinesPro = () => {
       "Do you want to perform or cancel the operation? accept / cancel"
     );
 
-    if (anotherMessage === true) {
+    if (anotherMessage) {
       administratorOrUser();
       return;
     } else {
