@@ -1,51 +1,118 @@
 
+const airlinesPro = () => {
+  const flights = [
+    { id: 00, to: "New York", from: "Barcelona", cost: 700, layover: false },
+    { id: 01, to: "Los Angeles", from: "Madrid", cost: 1100, layover: true },
+    { id: 02, to: "Paris", from: "Barcelona", cost: 210, layover: false },
+    { id: 03, to: "Roma", from: "Barcelona", cost: 150, layover: false },
+    { id: 04, to: "London", from: "Madrid", cost: 200, layover: false },
+    { id: 05, to: "Madrid", from: "Barcelona", cost: 90, layover: false },
+    { id: 06, to: "Tokyo", from: "Madrid", cost: 1500, layover: true },
+    { id: 07, to: "Shangai", from: "Barcelona", cost: 800, layover: true },
+    { id: 08, to: "Sydney", from: "Barcelona", cost: 150, layover: true },
+    { id: 09, to: "Tel-Aviv", from: "Madrid", cost: 150, layover: false },
+  ];
 
-const flights = [
-  { id: 00, to: "New York", from: "Barcelona", cost: 700, layover: false },
-  { id: 01, to: "Los Angeles", from: "Madrid", cost: 1100, layover: true },
-  { id: 02, to: "Paris", from: "Barcelona", cost: 210, layover: false },
-  { id: 03, to: "Roma", from: "Barcelona", cost: 150, layover: false },
-  { id: 04, to: "London", from: "Madrid", cost: 200, layover: false },
-  { id: 05, to: "Madrid", from: "Barcelona", cost: 90, layover: false },
-  { id: 06, to: "Tokyo", from: "Madrid", cost: 1500, layover: true },
-  { id: 07, to: "Shangai", from: "Barcelona", cost: 800, layover: true },
-  { id: 08, to: "Sydney", from: "Barcelona", cost: 150, layover: true },
-  { id: 09, to: "Tel-Aviv", from: "Madrid", cost: 150, layover: false },
-];
-const goodbyeMessage = (input) => {
-  if (input === null || input === undefined) {
-    console.log("Thank you for visiting ISDI Coders Airlines, see you later!");
+  let name;
+  const goodbyeMessage = (input) => {
+    if (input === null || input === undefined) {
+      console.log(
+        "Thank you for visiting ISDI Coders Airlines, see you later!"
+      );
 
-    return true;
-  }
+      return;
+    }
+  };
+  const inputData = () => {
+    name = prompt(`Welcome indicate your name please.`);
+    if (name === null) {
+      return;
+    }
 
-  return false;
-};
+    const welcomeMessage =
+      name === " "
+        ? console.log(`Welcome to ISDI Coders Airlines!`)
+        : console.log(`Welcome to ISDI Coders Airlines ${name}!`);
+    return name;
+  };
+  inputData();
 
-const invalidInput = () => {
-  const messageInvalid = alert("Invalid value try again please.");
-};
-let name;
-const inputData = () => {
-  name = prompt(`Welcome indicate your name please.`);
+  const airlines = () => {
+    console.log(`This is the information of all the flights:\n`);
+    const flightSchedule = (flights) => {
+      const flightsDescription = flights
+        .map(
+          (flight) =>
+            `The flight ${flight.id} with origin ${flight.from} and destiny ${
+              flight.to
+            } has a cost of ${flight.cost}€ and ${
+              flight.layover
+                ? "makes a stopover."
+                : "does not make any stopovers."
+            }`
+        )
+        .join("\n");
+
+      console.log(`${flightsDescription}`);
+      return;
+    };
+    flightSchedule(flights);
+
+    const averageCost = (flights) => {
+      let totalCost = flights.reduce(
+        (accumulator, flight) => accumulator + flight.cost,
+        0
+      );
+      let averageCost = totalCost / flights.length;
+
+      console.log(`The average cost of flights is: ${averageCost}€`);
+      return;
+    };
+    averageCost(flights);
+
+    console.log(`These are the flights with stopovers:\n`);
+    const flightsWithStopovers = (flights) => {
+      const groupeFlight = flights
+        .filter((flight) => flight.layover === true)
+        .sort((a, b) => a.cost - b.cost)
+        .map(
+          (flight) =>
+            `The flight ${flight.id} with origin ${flight.from} and destiny ${flight.to} has a cost of ${flight.cost}€.`
+        )
+        .join("\n");
+      console.log(`${groupeFlight}`);
+      return;
+    };
+    flightsWithStopovers(flights);
+
+    const lastFlights = (flights) => {
+      const last5Destinations = flights
+        .slice(-5)
+        .map((flight) => flight.to)
+        .join("\n");
+
+      console.log(
+        `These are the last 5 flights today, bound for:\n${last5Destinations}.`
+      );
+      return;
+      console.log("Thank you for choosing ISDI Coders Airlines!");
+    };
+
+    lastFlights(flights);
+  };
+
   if (name === null) {
+    console.log("Thank you for visiting ISDI Coders Airlines!, see you later!");
     return;
+  } else {
+    airlines();
   }
 
-  const welcomeMessage =
-    name === " "
-      ? console.log(`Welcome to ISDI Coders Airlines!`)
-      : console.log(`Welcome to ISDI Coders Airlines ${name}!`);
-  return name;
-};
-inputData();
-
-const airlines = () => {
-  const flightSchedule = (flights) => {
-    const flightsDescription = flights
+  const updated = () => {
+    let updatedFlights = flights
       .map(
         (flight) =>
-          `The flight ${flight.id} with origin ${flight.from} and destiny ${
+          `The flight ${flight.id} with origin ${flight.from} and destination ${
             flight.to
           } has a cost of ${flight.cost}€ and ${
             flight.layover
@@ -55,250 +122,229 @@ const airlines = () => {
       )
       .join("\n");
 
-    console.log(`${flightsDescription}`);
-    return;
+    return updatedFlights;
   };
-  flightSchedule(flights);
 
-  const averageCost = (flights) => {
-    let totalCost = flights.reduce(
-      (accumulator, flight) => accumulator + flight.cost,
-      0
+  const adminAddFlights = () => {
+    let letters = /^[A-Za-z]+$/;
+    if (flights.length > 15) {
+      alert("Cannot add more flights. Maximum limit reached.");
+
+      getVerification();
+      return;
+    }
+
+    let destination = prompt("Please enter the destination of the flight:");
+
+    if (destination === null) {
+      goodbyeMessage(destination);
+      return;
+    } else if (!letters.test(destination)) {
+      invalidInput();
+      destination = prompt("Please enter the destination of the flight:");
+    }
+    let origin = prompt("Please enter the origin of the flight:");
+    if (origin === null) {
+      goodbyeMessage(origin);
+      return;
+    } else if (!letters.test(origin)) {
+      invalidInput();
+      origin = prompt("Please enter the origin of the flight:");
+    }
+
+    let cost = +prompt("Please enter the cost of the flight:");
+    if (cost === null) {
+      goodbyeMessage(cost);
+      return;
+    } else if (Number.isNaN(Number(cost))) {
+      invalidInput();
+      cost = +prompt("Please enter the cost of the flight:");
+    }
+
+    let layover = prompt(`Is this a layover flight? 'TRUE' / 'FALSE'`);
+    if (layover === null) {
+      goodbyeMessage(layover);
+      return;
+    }
+
+    if (layover !== "TRUE" && layover !== "FALSE") {
+      invalidInput();
+      layover = prompt("Is this a layover flight?  'TRUE' / 'FALSE'");
+    }
+    layover = layover === "TRUE" ? true : false;
+
+    let currentNumberOfFlights = flights.length;
+    for (let i = 0; i < 1; i++) {
+      let newFlight = {
+        id: currentNumberOfFlights + i,
+        to: destination,
+        from: origin,
+        cost: cost,
+        layover: layover ? true : false,
+      };
+
+      flights.push(newFlight);
+      console.log(`The flight ${newFlight.id} has been added successfully.`);
+      getVerification();
+      return;
+    }
+  };
+
+  const removeFlights = (id) => {
+    let questionDelete = +prompt(
+      `Please enter the id of the flight you want to delete:`
     );
-    let averageCost = totalCost / flights.length;
-
-    console.log(`The average cost of flights is: ${averageCost}€`);
-    return;
-  };
-  averageCost(flights);
-
-  console.log(`These are the flights with stopovers:\n`);
-  const flightsWithStopovers = (flights) => {
-    const groupeFlight = flights
-      .filter((flight) => flight.layover === true)
-      .map(
-        (flight) =>
-          `The flight ${flight.id} with origin ${flight.from} and destiny ${flight.to} has a cost of ${flight.cost}€ with scale.`
-      )
-      .join("\n");
-    console.log(`${groupeFlight}`);
-    return;
-  };
-  flightsWithStopovers(flights);
-
-  const lastFlights = (flights) => {
-    const last5Destinations = flights
-      .slice(-5)
-      .map((flight) => flight.to)
-      .join("\n");
-
-    console.log(
-      `These are the last 5 flights today, bound for:\n${last5Destinations}.`
+    if (questionDelete === null) {
+      return goodbyeMessage(questionDelete);
+    }
+    if (Number.isNaN(parseInt(questionDelete))) {
+      invalidInput();
+      removeFlights();
+    }
+    const index = flights.findIndex(
+      (flight) => flight.id === Number(questionDelete)
     );
+    if (index === -1) {
+      alert(`The flight with id ${questionDelete} could not be found.`);
+      removeFlights();
+      return;
+    }
+    let confirmationDeleteFlights = prompt(
+      `Are you sure you want to delete the flight with id ${questionDelete}? Y/N.`
+    );
+    if (confirmationDeleteFlights === null) {
+      return goodbyeMessage(confirmationDeleteFlights);
+    }
+    confirmationDeleteFlights = confirmationDeleteFlights.toUpperCase();
 
+    if (
+      confirmationDeleteFlights !== "Y" &&
+      confirmationDeleteFlights !== "N"
+    ) {
+      invalidInput();
+    }
+    if (confirmationDeleteFlights === "Y") {
+      flights.splice(index, 1);
+      console.log(`The flight with id ${questionDelete} has been deleted.`);
+      updated();
+    } else if (confirmationDeleteFlights === "N") {
+      getVerification();
+    }
     return;
   };
+  const userSearchPrice = () => {
+    const minimumPrice = flights.reduce((min, flight) => {
+      return Math.min(min, flight.cost);
+    }, Infinity);
+    const maximumPrice = flights.reduce((max, flight) => {
+      return Math.max(max, flight.cost);
+    }, -Infinity);
+    alert(
+      `The minimum prices are: ${minimumPrice}€ and the maximum prices are: ${maximumPrice}€`
+    );
+    let lookUpPrice = prompt("Please enter the price you want to search:");
+    if (lookUpPrice === null) {
+      goodbyeMessage(lookUpPrice);
+      return;
+    }
+    if (Number.isNaN(Number(lookUpPrice))) {
+      invalidInput();
+      userSearchPrice();
+    }
+    if (lookUpPrice < minimumPrice || lookUpPrice > maximumPrice) {
+      alert("You have entered a non-existent price, please try again.");
+      userSearchPrice();
+    }
+    const examineFlights = (flights) => {
+      const priceFinder = flights
+        .filter((flight) => flight.cost <= lookUpPrice)
+        .sort((a, b) => b.cost - a.cost)
+        .map((flight) => {
+          return `The flight ${flight.id} with origin ${
+            flight.from
+          } and destination ${flight.to} has a cost of ${flight.cost}€ ${
+            flight.layover
+              ? "makes a stopover."
+              : "does not make any stopovers."
+          }`;
+        });
+      console.log(priceFinder.join("\n"));
 
-  lastFlights(flights);
-};
-airlines();
-const updated = () => {
-  let updatedFlights = flights
-    .map(
-      (flight) =>
-        `The flight ${flight.id} with origin ${flight.from} and destination ${
-          flight.to
-        } has a cost of ${flight.cost}€ and ${
-          flight.layover ? "makes a stopover." : "does not make any stopovers."
-        }`
-    )
-    .join("\n");
-
-  return updatedFlights;
-};
-
-const adminAddFlights = () => {
-  let letters = /^[A-Za-z]+$/;
-  if (flights.length > 15) {
-    alert("Cannot add more flights. Maximum limit reached.");
-
-    getVerification();
-    return;
-  }
-
-  let destination = prompt("Please enter the destination of the flight:");
-  if (goodbyeMessage(destination)) {
-    return;
-  } else if (!letters.test(destination)) {
-    invalidInput();
-    destination = prompt("Please enter the destination of the flight:");
-  }
-  let origin = prompt("Please enter the origin of the flight:");
-  if (goodbyeMessage(origin)) {
-    return;
-  } else if (!letters.test(origin)) {
-    invalidInput();
-    origin = prompt("Please enter the origin of the flight:");
-  }
-
-  let cost = +prompt("Please enter the cost of the flight:");
-  if (goodbyeMessage(cost)) {
-    return;
-  } else if (Number.isNaN(cost)) {
-    invalidInput();
-    cost = +prompt("Please enter the cost of the flight:");
-  }
-
-  let layover = prompt(`Is this a layover flight? 'true' / 'false'`);
-  if (goodbyeMessage(layover)) {
-    return;
-  }
-  if (layover !== "true" && layover !== "false") {
-    invalidInput();
-    layover = prompt("Is this a layover flight?  'true' / 'false'");
-  }
-  layover = layover === "true" ? true : false;
-  let currentNumberOfFlights = flights.length;
-  for (let i = 0; i < 1; i++) {
-    let newFlight = {
-      id: currentNumberOfFlights + i,
-      to: destination,
-      from: origin,
-      cost: cost,
-      layover: layover ? true : false,
+      lookForOthers();
     };
+    return examineFlights(flights);
+  };
+  const lookForOthers = () => {
+    const anotherSearch = prompt("Do you want to find another flight? Y/N");
+    if (anotherSearch === null) {
+      goodbyeMessage(anotherSearch);
+      return;
+    }
+    const askSearch = anotherSearch.toUpperCase();
 
-    flights.push(newFlight);
-    console.log(`The flight ${newFlight.id} has been added successfully.`);
-    getVerification();
-    return;
-  }
-};
+    if (askSearch !== "Y" && askSearch !== "N") {
+      invalidInput();
+      lookForOthers();
+    }
 
-const removeFlights = (id) => {
-  let questionDelete = +prompt(
-    `Please enter the id of the flight you want to delete:`
-  );
-  if (goodbyeMessage(questionDelete)) {
-    return;
-  }
-  if (Number.isNaN(parseInt(questionDelete))) {
-    invalidInput();
-    removeFlights();
-  }
-  const index = flights.findIndex(
-    (flight) => flight.id === Number(questionDelete)
-  );
-  if (index === -1) {
-    alert(`The flight with id ${questionDelete} could not be found.`);
-    removeFlights();
-    return;
-  }
-  let confirmationDeleteFlights = prompt(
-    `Are you sure you want to delete the flight with id ${questionDelete}? Y/N.`
-  );
-  if (goodbyeMessage(confirmationDeleteFlights)) {
-    return;
-  }
-  confirmationDeleteFlights = confirmationDeleteFlights.toUpperCase();
-  if (confirmationDeleteFlights !== "Y" && confirmationDeleteFlights !== "N") {
-    invalidInput();
-  }
-  if (confirmationDeleteFlights === "Y") {
-    flights.splice(index, 1);
-    console.log(`The flight with id ${questionDelete} has been deleted.`);
-    updated();
-  } else if (confirmationDeleteFlights === "N") {
-    getVerification();
-  }
-  return;
-};
-const userSearchPrice = () => {
-  let lookUpPrice = +prompt("Please enter the price you want to search:");
-  if (goodbyeMessage(lookUpPrice)) {
-    return;
-  }
-  if (Number.isNaN(lookUpPrice)) {
-    invalidInput();
-    userSearchPrice();
-  }
+    if (askSearch === "Y") {
+      userSearchPrice();
+    } else if (askSearch === "N") {
+      administratorOrUser();
+      return;
+    }
+    return askSearch;
+  };
+  const getVerification = () => {
+    let action = prompt(
+      `What action do you want to perform? press ADD, DELETE, SHOW. If you want to go back to the beginning press BACK`
+    );
 
-  const examineFlights = (flights) => {
-    const priceFinder = flights
-      .filter((flight) => flight.cost <= lookUpPrice)
-      .sort((a, b) => b.cost - a.cost)
-      .map((flight) => {
-        return `The flight ${flight.id} with origin ${
-          flight.from
-        } and destination ${flight.to} has a cost of ${flight.cost}€ ${
-          flight.layover ? "makes a stopover." : "does not make any stopovers."
-        }`;
-      });
-    console.log(priceFinder.join("\n"));
-    lookForOthers();
+    if (action === null) {
+      goodbyeMessage(action);
+      return;
+    }
+
+    action = action.toUpperCase();
+
+    if (action === "ADD") {
+      adminAddFlights();
+    } else if (action === "SHOW") {
+      console.log(updated());
+
+      return getVerification();
+    } else if (action === "DELETE") {
+      removeFlights();
+      return getVerification();
+    } else if (action === "BACK") {
+      administratorOrUser();
+    }
+
+    return action;
   };
 
-  return examineFlights(flights);
+  const administratorOrUser = () => {
+    const question = prompt(
+      `Can you tell me if you are a user or an administrator please? ADMIN/USER`
+    );
+    if (question === null) {
+      goodbyeMessage(question);
+      return;
+    }
+
+    const answer = question.toUpperCase();
+
+    if (answer === "ADMIN") {
+      getVerification();
+    } else if (answer === "USER") {
+      userSearchPrice();
+    } else {
+      invalidInput();
+      administratorOrUser();
+    }
+
+    goodbyeMessage(answer);
+  };
+  administratorOrUser();
 };
-const lookForOthers = () => {
-  const anotherSearch = prompt("Do you want to find another flight? Y/N");
-  if (goodbyeMessage(anotherSearch)) {
-    return;
-  }
-  const askSearch = anotherSearch.toUpperCase();
-  if (askSearch !== "Y" && askSearch !== "N") {
-    invalidInput();
-    lookForOthers();
-  }
-
-  if (askSearch === "Y") {
-    userSearchPrice();
-  } else if (askSearch === "N") {
-    goodbyeMessage(askSearch);
-  }
-  return askSearch;
-};
-const getVerification = () => {
-  let action = prompt(`What action do you want to perform? ADD, DELETE, SHOW`);
-
-  if (goodbyeMessage(action)) {
-    return;
-  }
-  action = action.toUpperCase();
-
-  if (action === "ADD") {
-    adminAddFlights();
-  } else if (action === "SHOW") {
-    console.log(updated());
-
-    return getVerification();
-  } else if (action === "DELETE") {
-    removeFlights();
-    return getVerification();
-  }
-
-  return action;
-};
-
-const administratorOrUser = () => {
-  const question = prompt(
-    `Can you tell me if you are a user or an administrator please? ADMIN/USER`
-  );
-  if (goodbyeMessage(question)) {
-    return;
-  }
-
-  const answer = question.toUpperCase();
-
-  if (answer === "ADMIN") {
-    getVerification();
-  } else if (answer === "USER") {
-    userSearchPrice();
-  } else {
-    invalidInput();
-    administratorOrUser();
-  }
-  return answer;
-};
-administratorOrUser();
-
+airlinesPro();
