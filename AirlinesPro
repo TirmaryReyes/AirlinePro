@@ -13,8 +13,8 @@ const airlinesPro = () => {
   ];
 
   let name;
-  const goodbyeMessage = (input) => {
-    if (input === null || input === undefined || !input) {
+  const goodbyeMessage = (access) => {
+    if (access === null || access === undefined || !access) {
       console.log(
         "Thank you for visiting ISDI Coders Airlines, see you later!"
       );
@@ -25,17 +25,17 @@ const airlinesPro = () => {
   const invalidInput = () => {
     const messageInvalid = alert("Invalid value try again please.");
   };
-  const anotherOperation = () => {
-    let anotherMessage = confirm(
+  const doAnotherOperation = () => {
+    let continueOrCancel = confirm(
       "Do you want to perform or cancel the operation? accept / cancel"
     );
 
-    if (anotherMessage) {
+    if (continueOrCancel) {
       administratorOrUser();
       return;
     } else {
-      anotherMessage === false;
-      goodbyeMessage(anotherMessage);
+      continueOrCancel === false;
+      goodbyeMessage(continueOrCancel);
       return;
     }
   };
@@ -124,8 +124,8 @@ const airlinesPro = () => {
     airlines();
   }
 
-  const updated = () => {
-    let updatedFlights = flights
+  const flightUpdate = () => {
+    let flightModification = flights
       .map(
         (flight) =>
           `The flight ${flight.id} with origin ${flight.from} and destination ${
@@ -138,7 +138,7 @@ const airlinesPro = () => {
       )
       .join("\n");
 
-    return updatedFlights;
+    return flightModification;
   };
 
   const adminAddFlights = () => {
@@ -146,90 +146,93 @@ const airlinesPro = () => {
     if (flights.length > 15) {
       alert("Cannot add more flights. Maximum limit reached.");
 
-      getVerification();
+      whatActionToDo();
       return;
     }
 
-    let getDestination = prompt("Please enter the destination of the flight:");
+    let enterDestination = prompt(
+      "Please enter the destination of the flight:"
+    );
 
-    if (getDestination === null) {
-      goodbyeMessage(getDestination);
+    if (enterDestination === null) {
+      goodbyeMessage(enterDestination);
       return;
-    } else if (!letters.test(getDestination)) {
+    } else if (!letters.test(enterDestination)) {
       invalidInput();
-      getDestination = prompt("Please enter the destination of the flight:");
+      enterDestination = prompt("Please enter the destination of the flight:");
     }
-    let getOrigin = prompt("Please enter the origin of the flight:");
-    if (getOrigin === null) {
-      goodbyeMessage(getOrigin);
+    let enterOrigin = prompt("Please enter the origin of the flight:");
+    if (enterOrigin === null) {
+      goodbyeMessage(enterOrigin);
       return;
-    } else if (!letters.test(getOrigin)) {
+    } else if (!letters.test(enterOrigin)) {
       invalidInput();
-      getOrigin = prompt("Please enter the origin of the flight:");
+      enterOrigin = prompt("Please enter the origin of the flight:");
     }
 
-    let getCost = +prompt("Please enter the cost of the flight:");
-    if (cost === null) {
-      goodbyeMessage(getCost);
+    let enterCost = +prompt("Please enter the cost of the flight:");
+    if (enterCost === null) {
+      goodbyeMessage(enterCost);
       return;
-    } else if (Number.isNaN(Number(getCost))) {
+    } else if (Number.isNaN(Number(enterCost))) {
       invalidInput();
-      getCost = +prompt("Please enter the cost of the flight:");
+      enterCost = +prompt("Please enter the cost of the flight:");
     }
 
-    let getLayover = prompt(`Is this a layover flight? 'TRUE' / 'FALSE'`);
-    if (getLayover === null) {
-      goodbyeMessage(getLayover);
-      return;
-    }
-
-    if (getLayover !== "TRUE" && getLayover !== "FALSE") {
+    let enterLayover = prompt(`Is this a layover flight? 'TRUE' / 'FALSE'`);
+    while (enterLayover !== "TRUE" && enterLayover !== "FALSE") {
+      if (enterLayover === null) {
+        goodbyeMessage(enterLayover);
+        return;
+      }
       invalidInput();
-      getLayover = prompt("Is this a layover flight?  'TRUE' / 'FALSE'");
+      enterLayover = prompt("Is this a layover flight?  'TRUE' / 'FALSE'");
     }
-    getLayover = getLayover === "TRUE" ? true : false;
+    enterLayover = enterLayover === "TRUE" ? true : false;
 
     let currentNumberOfFlights = flights.length;
     for (let i = 0; i < 1; i++) {
       let newFlight = {
         id: currentNumberOfFlights + i,
-        to: getDestination,
-        from: getOrigin,
-        cost: getCost,
-        layover: getLayover ? true : false,
+        to: enterDestination,
+        from: enterOrigin,
+        cost: enterCost,
+        layover: enterLayover ? true : false,
       };
 
       flights.push(newFlight);
       console.log(`The flight ${newFlight.id} has been added successfully.`);
-      console.log(updated());
+      console.log(flightUpdate());
 
-      anotherOperation();
+      doAnotherOperation();
       return;
     }
   };
 
   const removeFlights = (id) => {
-    let questionDelete = +prompt(
+    let whichFlightDoYouWantToDelete = +prompt(
       `Please enter the id of the flight you want to delete:`
     );
-    if (questionDelete === null) {
-      goodbyeMessage(questionDelete);
+    if (whichFlightDoYouWantToDelete === null) {
+      goodbyeMessage(whichFlightDoYouWantToDelete);
       return;
     }
-    if (Number.isNaN(parseInt(questionDelete))) {
+    if (Number.isNaN(parseInt(whichFlightDoYouWantToDelete))) {
       invalidInput();
       removeFlights();
     }
-    const index = flights.findIndex(
-      (flight) => flight.id === Number(questionDelete)
+    const flightNumber = flights.findIndex(
+      (flight) => flight.id === Number(whichFlightDoYouWantToDelete)
     );
-    if (index === -1) {
-      alert(`The flight with id ${questionDelete} could not be found.`);
+    if (flightNumber === -1) {
+      alert(
+        `The flight with id ${whichFlightDoYouWantToDelete} could not be found.`
+      );
       removeFlights();
       return;
     }
     let confirmationDeleteFlights = prompt(
-      `Are you sure you want to delete the flight with id ${questionDelete}? Y/N.`
+      `Are you sure you want to delete the flight with id ${whichFlightDoYouWantToDelete}? Y/N.`
     );
     if (confirmationDeleteFlights === null) {
       return goodbyeMessage(confirmationDeleteFlights);
@@ -243,12 +246,14 @@ const airlinesPro = () => {
       invalidInput();
     }
     if (confirmationDeleteFlights === "Y") {
-      flights.splice(index, 1);
-      console.log(`The flight with id ${questionDelete} has been deleted.`);
-      console.log(updated());
-      anotherOperation();
+      flights.splice(flightNumber, 1);
+      console.log(
+        `The flight with id ${whichFlightDoYouWantToDelete} has been deleted.`
+      );
+      console.log(flightUpdate());
+      doAnotherOperation();
     } else if (confirmationDeleteFlights === "N") {
-      anotherOperation();
+      doAnotherOperation();
     }
     return;
   };
@@ -262,24 +267,30 @@ const airlinesPro = () => {
     alert(
       `The minimum prices are: ${minimumPrice}€ and the maximum prices are: ${maximumPrice}€`
     );
-    let lookUpPrice = prompt("Please enter the price you want to search:");
-    if (lookUpPrice === null) {
-      goodbyeMessage(lookUpPrice);
+    let searchFlightPrices = prompt(
+      "Please enter the price you want to search:"
+    );
+    if (searchFlightPrices === null) {
+      goodbyeMessage(searchFlightPrices);
       return;
     }
-    if (Number.isNaN(Number(lookUpPrice))) {
+    if (Number.isNaN(Number(searchFlightPrices))) {
       invalidInput();
       userSearchPrice();
       return;
     }
-    if (lookUpPrice < minimumPrice || lookUpPrice > maximumPrice) {
+    if (
+      searchFlightPrices < minimumPrice ||
+      searchFlightPrices > maximumPrice
+    ) {
       alert("You have entered a non-existent price, please try again.");
       userSearchPrice();
       return;
     }
-    const examineFlights = (flights) => {
+
+    const flightsFound = (flights) => {
       const priceFinder = flights
-        .filter((flight) => flight.cost <= lookUpPrice)
+        .filter((flight) => flight.cost <= searchFlightPrices)
         .sort((a, b) => b.cost - a.cost)
         .map((flight) => {
           return `The flight ${flight.id} with origin ${
@@ -292,13 +303,13 @@ const airlinesPro = () => {
         });
       console.log(priceFinder.join("\n"));
 
-      anotherOperation();
+      doAnotherOperation();
     };
-    examineFlights(flights);
+    flightsFound(flights);
     return;
   };
 
-  const getVerification = () => {
+  const whatActionToDo = () => {
     let action = prompt(
       `What action do you want to perform? press ADD, DELETE, SHOW. If you want to go back to the beginning press BACK`
     );
@@ -313,34 +324,37 @@ const airlinesPro = () => {
     if (action === "ADD") {
       adminAddFlights();
     } else if (action === "SHOW") {
-      console.log(updated());
+      console.log(flightUpdate());
 
-      return getVerification();
+      return whatActionToDo();
     } else if (action === "DELETE") {
       removeFlights();
-      return getVerification();
+      return whatActionToDo();
     } else if (action === "BACK") {
       administratorOrUser();
+    } else {
+      invalidInput();
+      whatActionToDo();
     }
 
     return action;
   };
 
   const administratorOrUser = () => {
-    const question = prompt(
+    const questionAdminOrUser = prompt(
       `Can you tell me if you are a user or an administrator please? ADMIN/USER`
     );
-    if (question === null) {
-      goodbyeMessage(question);
+    if (questionAdminOrUser === null) {
+      goodbyeMessage(questionAdminOrUser);
       return;
     }
 
-    const answer = question.toUpperCase();
+    const replyFromAdminOrUser = questionAdminOrUser.toUpperCase();
 
-    if (answer === "ADMIN") {
+    if (replyFromAdminOrUser === "ADMIN") {
       alert("Welcome Admin!");
-      getVerification();
-    } else if (answer === "USER") {
+      whatActionToDo();
+    } else if (replyFromAdminOrUser === "USER") {
       alert("Welcome User!");
       userSearchPrice();
     } else {
@@ -348,7 +362,7 @@ const airlinesPro = () => {
       administratorOrUser();
     }
 
-    goodbyeMessage(answer);
+    goodbyeMessage(replyFromAdminOrUser);
   };
   administratorOrUser();
 };
