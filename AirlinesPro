@@ -22,6 +22,9 @@ const airlinesPro = () => {
       return;
     }
   };
+  const invalidInput = () => {
+    const messageInvalid = alert("Invalid value try again please.");
+  };
   const anotherOperation = () => {
     let anotherMessage = confirm(
       "Do you want to perform or cancel the operation? accept / cancel"
@@ -31,10 +34,10 @@ const airlinesPro = () => {
       administratorOrUser();
       return;
     } else {
-      anotherMessage = false;
+      anotherMessage === false;
       goodbyeMessage(anotherMessage);
+      return;
     }
-    return;
   };
   const inputData = () => {
     name = prompt(`Welcome indicate your name please.`);
@@ -210,7 +213,8 @@ const airlinesPro = () => {
       `Please enter the id of the flight you want to delete:`
     );
     if (questionDelete === null) {
-      return goodbyeMessage(questionDelete);
+      goodbyeMessage(questionDelete);
+      return;
     }
     if (Number.isNaN(parseInt(questionDelete))) {
       invalidInput();
@@ -288,7 +292,8 @@ const airlinesPro = () => {
 
       anotherOperation();
     };
-    return examineFlights(flights);
+    examineFlights(flights);
+    return;
   };
 
   const getVerification = () => {
