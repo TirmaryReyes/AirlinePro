@@ -270,10 +270,12 @@ const airlinesPro = () => {
     if (Number.isNaN(Number(lookUpPrice))) {
       invalidInput();
       userSearchPrice();
+      return;
     }
     if (lookUpPrice < minimumPrice || lookUpPrice > maximumPrice) {
       alert("You have entered a non-existent price, please try again.");
       userSearchPrice();
+      return;
     }
     const examineFlights = (flights) => {
       const priceFinder = flights
