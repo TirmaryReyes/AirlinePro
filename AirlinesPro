@@ -180,15 +180,19 @@ const airlinesPro = () => {
     }
 
     let enterLayover = prompt(`Is this a layover flight? 'TRUE' / 'FALSE'`);
-    while (enterLayover !== "TRUE" && enterLayover !== "FALSE") {
+    while (
+      enterLayover.toLowerCase() !== "true" &&
+      enterLayover.toLowerCase() !== "false"
+    ) {
       if (enterLayover === null) {
         goodbyeMessage(enterLayover);
         return;
       }
       invalidInput();
+
       enterLayover = prompt("Is this a layover flight?  'TRUE' / 'FALSE'");
     }
-    enterLayover = enterLayover === "TRUE" ? true : false;
+    enterLayover = enterLayover.toLowerCase() === "true" ? true : false;
 
     let currentNumberOfFlights = flights.length;
     for (let i = 0; i < 1; i++) {
@@ -204,23 +208,25 @@ const airlinesPro = () => {
       console.log(`The flight ${newFlight.id} has been added successfully.`);
       console.log(flightUpdate());
 
-      doAnotherOperation();
+      whatActionToDo();
       return;
     }
   };
 
   const removeFlights = (id) => {
-    let whichFlightDoYouWantToDelete = +prompt(
+    let whichFlightDoYouWantToDelete = prompt(
       `Please enter the id of the flight you want to delete:`
     );
     if (whichFlightDoYouWantToDelete === null) {
-      goodbyeMessage(whichFlightDoYouWantToDelete);
+      goodbyeMessage();
       return;
     }
+    whichFlightDoYouWantToDelete = whichFlightDoYouWantToDelete.trim();
     if (Number.isNaN(parseInt(whichFlightDoYouWantToDelete))) {
       invalidInput();
       removeFlights();
     }
+    
     const flightNumber = flights.findIndex(
       (flight) => flight.id === Number(whichFlightDoYouWantToDelete)
     );
@@ -232,30 +238,37 @@ const airlinesPro = () => {
       return;
     }
     let confirmationDeleteFlights = prompt(
-      `Are you sure you want to delete the flight with id ${whichFlightDoYouWantToDelete}? Y/N.`
+      `Are you sure you want to delete the flight with id ${whichFlightDoYouWantToDelete}? y/n.`
     );
     if (confirmationDeleteFlights === null) {
-      return goodbyeMessage(confirmationDeleteFlights);
+      goodbyeMessage();
+      return;
     }
-    confirmationDeleteFlights = confirmationDeleteFlights.toUpperCase();
+    confirmationDeleteFlights = confirmationDeleteFlights
+      .trim()
+      .toLocaleLowerCase();
 
     if (
-      confirmationDeleteFlights !== "Y" &&
-      confirmationDeleteFlights !== "N"
+      confirmationDeleteFlights.toLowerCase() !== "y" &&
+      confirmationDeleteFlights.toLowerCase() !== "n"
     ) {
       invalidInput();
+      removeFlights();
+      return;
     }
-    if (confirmationDeleteFlights === "Y") {
+    if (confirmationDeleteFlights === "y") {
       flights.splice(flightNumber, 1);
       console.log(
         `The flight with id ${whichFlightDoYouWantToDelete} has been deleted.`
       );
       console.log(flightUpdate());
       doAnotherOperation();
-    } else if (confirmationDeleteFlights === "N") {
+    } else if (confirmationDeleteFlights === "n") {
       doAnotherOperation();
+      return;
+    } else {
+      goodbyeMessage();
     }
-    return;
   };
   const userSearchPrice = () => {
     const minimumPrice = flights.reduce((min, flight) => {
@@ -319,18 +332,17 @@ const airlinesPro = () => {
       return;
     }
 
-    action = action.toUpperCase();
+    action = action.toLowerCase();
 
-    if (action === "ADD") {
+    if (action === "add") {
       adminAddFlights();
-    } else if (action === "SHOW") {
+    } else if (action === "show") {
       console.log(flightUpdate());
 
-      return whatActionToDo();
-    } else if (action === "DELETE") {
+      whatActionToDo();
+    } else if (action === "delete") {
       removeFlights();
-      return whatActionToDo();
-    } else if (action === "BACK") {
+    } else if (action === "back") {
       administratorOrUser();
     } else {
       invalidInput();
@@ -349,12 +361,12 @@ const airlinesPro = () => {
       return;
     }
 
-    const replyFromAdminOrUser = questionAdminOrUser.toUpperCase();
+    const replyFromAdminOrUser = questionAdminOrUser.toLowerCase();
 
-    if (replyFromAdminOrUser === "ADMIN") {
+    if (replyFromAdminOrUser === "admin") {
       alert("Welcome Admin!");
       whatActionToDo();
-    } else if (replyFromAdminOrUser === "USER") {
+    } else if (replyFromAdminOrUser === "user") {
       alert("Welcome User!");
       userSearchPrice();
     } else {
